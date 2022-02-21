@@ -130,7 +130,6 @@ class ImportSurveysCommand extends Command
                 'start_date' => $item['debut_enquete'],
                 'end_date' => $item['fin_enquete'],
             ]);
-            // $survey->save();
 
             $candidates->each(function ($c) use ($survey) {
                 $candidate = Candidate::where('name', $c['candidat'])->first();
@@ -143,8 +142,6 @@ class ImportSurveysCommand extends Command
                 }
 
                 $survey->candidates()->attach($candidate, ['stat' => $c['intentions']]);
-
-                dd($survey->candidates);
             });
         });
     }
