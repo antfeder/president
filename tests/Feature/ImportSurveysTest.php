@@ -2,12 +2,14 @@
 
 namespace Tests\Feature;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
-use Tests\TestCase;
-use Mockery\MockInterface;
 use App\Console\Commands\ImportSurveysCommand;
 use App\Models\Survey;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Http;
+use Mockery\MockInterface;
+use Tests\TestCase;
 
 class ImportSurveysTest extends TestCase
 {
@@ -20,10 +22,15 @@ class ImportSurveysTest extends TestCase
      */
     public function test_import_surveys_command()
     {
-        $command = $this->artisan('surveys:refresh');
+        $file = json_decode(File::get(storage_path('testing/surveys.json')), true);
+
+        Http::fake([
+            '*' => Http::response($file),
+        ]);
+
+        $command = $this->artisan('surveys:refresh')->run();
 
         $count = Survey::count();
         $this->assertEquals(1, $count);
-
     }
 }
