@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Console\Commands\ImportSurveysCommand;
+use App\Models\Candidate;
 use App\Models\Survey;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -32,5 +33,14 @@ class ImportSurveysTest extends TestCase
 
         $count = Survey::count();
         $this->assertEquals(1, $count);
+
+        $survey = Survey::withCount('candidates')->first();
+        $this->assertEquals(13, $survey->candidates_count);
+
+        $anne = Candidate::where('name', 'Anne Hidalgo')->first();
+        $this->assertEquals(1, $count);
+
+        $anne = Candidate::with('surveys')->where('name', 'Anne Hidalgo')->first();
+        $this->assertEquals(4, $anne->surveys->first()->pivot->stat);
     }
 }

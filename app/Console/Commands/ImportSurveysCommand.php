@@ -134,10 +134,10 @@ class ImportSurveysCommand extends Command
             $candidates->each(function ($c) use ($survey) {
                 $candidate = Candidate::where('name', $c['candidat'])->first();
 
-                if (\is_null($c)) {
+                if (\is_null($candidate)) {
                     $candidate = Candidate::create([
                         'name' => $c['candidat'],
-                        'politic' => $c['parti'],
+                        'politic' => $c['parti'][0],
                     ]);
                 }
 
