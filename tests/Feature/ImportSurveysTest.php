@@ -31,16 +31,29 @@ class ImportSurveysTest extends TestCase
 
         $command = $this->artisan('surveys:refresh')->run();
 
-        $count = Survey::count();
-        $this->assertEquals(1, $count);
-
         $survey = Survey::withCount('candidates')->first();
         $this->assertEquals(13, $survey->candidates_count);
 
-        $anne = Candidate::where('name', 'Anne Hidalgo')->first();
-        $this->assertEquals(1, $count);
-
         $anne = Candidate::with('surveys')->where('name', 'Anne Hidalgo')->first();
         $this->assertEquals(4, $anne->surveys->first()->pivot->stat);
+
+        $jeanLuc = Candidate::where('name', 'Jean-Luc Mélenchon')->first();
+        $this->assertEquals('France insoumise', $jeanLuc->politic);
+
+        // from Candidate
+        $jeanLuc = Candidate::where('name', 'Jean-Luc Mélenchon')
+            ->with(['surveys' => function ($q) {
+                $q->where('identifier', '20210223_0224_ifp');
+            }])->first();
+
+        $this->assertEquals(12, $jeanLuc->surveys->first()->pivot->stat);
+
+        // from Survey
+        $ifpSurvey = Survey::where('identifier', '20210223_0224_ifp')
+            ->with(['candidates' => function ($q) {
+                $q->where('name', 'Jean-Luc Mélenchon');
+            }])->first();
+
+        $this->assertEquals(12, $ifpSurvey->candidates->first()->pivot->stat);
     }
 }

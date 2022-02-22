@@ -34,6 +34,8 @@ class Survey extends Model
      */
     public function candidates()
     {
-        return $this->belongsToMany(Candidate::class)->withPivot('stat');
+        return $this->belongsToMany(Candidate::class)
+            ->withPivot('stat')
+            ->withTimestamps();
     }
 }

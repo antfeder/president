@@ -82,7 +82,7 @@ class ImportSurveysCommand extends Command
     }
 
     /**
-     * Flush all corresponding cache tags entries 
+     * Flush all corresponding cache tags entries
      *
      * @param array $tags
      * @return void
@@ -134,7 +134,8 @@ class ImportSurveysCommand extends Command
             $candidates->each(function ($c) use ($survey) {
                 $candidate = Candidate::where('name', $c['candidat'])->first();
 
-                if (\is_null($candidate)) {
+                // ignore bad data 20210127_0128_ips
+                if (\is_null($candidate) && !is_null($c['candidat'])) {
                     $candidate = Candidate::create([
                         'name' => $c['candidat'],
                         'politic' => $c['parti'][0],
