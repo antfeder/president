@@ -29,7 +29,7 @@
         @endforeach
     </tbody>
     <tfoot>
-        <th colspan="{{ $candidate->count() + 1 }}">{{__("surveys.update")}}:  {{ $lastRun->updated_at}}</th>
+        <th colspan="{{ $candidates->count() + 1 }}">{{ __("surveys.update") }}:  {{ $lastRun->updated_at }}</th>
     </tfoot>
 </table>
 @endsection
