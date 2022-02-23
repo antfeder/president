@@ -19,6 +19,25 @@ Last update: {date}
 
 ## Init
 
+Copying environments variables
+
+```sh
+cp .env.example .env
+```
+
+Installing dependancy
+
+```sh
+docker run --rm \
+    -u "$(id -u):$(id -g)" \
+    -v $(pwd):/var/www/html \
+    -w /var/www/html \
+    laravelsail/php81-composer:latest \
+    composer install --ignore-platform-reqs
+```
+
+Building project
+
 ```sh
 ./vendor/bin/sail up -d --build
 ./vendor/bin/sail php artisan key:generate
