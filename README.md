@@ -1,7 +1,8 @@
 # Surveys
 
 [Laravel Docs](https://laravel.com/docs/9.x)  
-[Surveys Data source](https://raw.githubusercontent.com/nsppolls/nsppolls/master/presidentielle.json)
+[Surveys Data source](https://raw.githubusercontent.com/nsppolls/nsppolls/master/presidentielle.json)  
+[Results(PDF)](./docs/results.pdf)  
 
 ## Exercice
 
@@ -49,7 +50,7 @@ which is keeping relationnal data.
 
 In order to replicate a real environment, a scheduled task has been implemented.  
 
-Data refreshing is handled with an artisan command: `surveys:refresh`.  
+Data refreshing is handled through an artisan command: `surveys:refresh`.  
 Its job is to fetch fresh data, and managing synchronization accross the database.  
 
 For demo purpose, a cron task is scheduled to execute every minute in dev environment.  
@@ -75,8 +76,6 @@ In order to get best performances results and minimizing data computation freque
 alongside a web server page caching solution as NGINX or APACHE could do.
 
 ### Going further
-
-@todo discuss about:
 
 - Cloud database read/write operations cost  
 - Data Compute using third party API with limited rates  
