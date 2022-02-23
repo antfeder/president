@@ -13,6 +13,6 @@ return [
     |
     */
 
-    'title' => '2022 Presidential Elections',
+    'title' => '2022 Presidential elections surveys',
 
 ];

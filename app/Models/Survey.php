@@ -38,4 +38,14 @@ class Survey extends Model
             ->withPivot('stat')
             ->withTimestamps();
     }
+
+    public function hasCandidate($candidateId)
+    {
+        return $this->candidates->where('id', $candidateId)->count() > 0;
+    }
+
+    public function getCandidate($candidateId)
+    {
+        return $this->candidates->where('id', $candidateId)->first();
+    }
 }
