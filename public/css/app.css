@@ -1,1 +1,1 @@
-table{background:#fff;border:1px solid grey;border-collapse:collapse;color:#333;font-size:12pt;margin:0 auto}table tfoot th,table thead th{background:rgba(0,0,0,.1);color:#777;text-align:left}table td,table th{border:1px solid #d3d3d3;padding:.5em}
+table{background:#fff;border:1px solid grey;border-collapse:collapse;color:#333;font-size:12pt;margin:0 auto;text-align:center}table tfoot th,table thead th{background:rgba(0,0,0,.1);color:#777;text-align:left}table td,table th{border:1px solid #d3d3d3;min-width:80px;padding:.5em}

@@ -17,7 +17,7 @@
     <tbody>
         @foreach ($surveys as $survey)
         <tr>
-            <th>{{ $survey->identifier }}</th>
+            <th>{{ $survey->getRollingPeriod() }}</th>
             @foreach ($candidates as $candidate)
                 @if( $survey->hasCandidate($candidate->id) )
                     <td>{{ $survey->getCandidate($candidate->id)->pivot->stat }}%</td>
@@ -29,7 +29,7 @@
         @endforeach
     </tbody>
     <tfoot>
-        <th colspan="{{ $candidate->count() + 1 }}">Last Update:  {{ $lastRun->updated_at}}</th>
+        <th colspan="{{ $candidate->count() + 1 }}">{{__("surveys.update")}}:  {{ $lastRun->updated_at}}</th>
     </tfoot>
 </table>
 @endsection

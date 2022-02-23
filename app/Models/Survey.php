@@ -39,13 +39,35 @@ class Survey extends Model
             ->withTimestamps();
     }
 
-    public function hasCandidate($candidateId)
+    /**
+     * Check candidate existance
+     *
+     * @param integer $candidateId
+     * @return boolean
+     */
+    public function hasCandidate(int $candidateId)
     {
         return $this->candidates->where('id', $candidateId)->count() > 0;
     }
 
-    public function getCandidate($candidateId)
+    /**
+     * Get specific candidate relation
+     *
+     * @param integer $candidateId
+     * @return void
+     */
+    public function getCandidate(int $candidateId)
     {
         return $this->candidates->where('id', $candidateId)->first();
+    }
+
+    /**
+     * Get formatted survey rolling period
+     *
+     * @return void
+     */
+    public function getRollingPeriod()
+    {
+        return implode(' ', [$this->start_date, $this->end_date]) ;
     }
 }

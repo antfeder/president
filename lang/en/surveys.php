@@ -14,5 +14,6 @@ return [
     */
 
     'title' => '2022 Presidential elections surveys',
+    'update' => 'Last update',
 
 ];
