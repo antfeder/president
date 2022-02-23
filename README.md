@@ -69,15 +69,18 @@ sail php artisan surveys:refresh
 
 ## Performances
 
+### Caching
+
 In order to get best performances results and minimizing data computation frequency, this application should be deployed  
 alongside a web server page caching solution as NGINX or APACHE could do.
 
-## Redis Cache
+### Going further
 
-@todo
-- Cloud database read/write operations cost
-- Data Compute using third party API with limited rates
-- SPOF webserver caching solution
+@todo discuss about:
+
+- Cloud database read/write operations cost  
+- Data Compute using third party API with limited rates  
+- SPOF webserver caching solution  
 
 ## Misc
 
