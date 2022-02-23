@@ -6,9 +6,9 @@ use App\Models\Candidate;
 use App\Models\Survey;
 use App\Services\SurveyProvider;
 use DateTime;
-use DB;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Collection;
 
 class ImportSurveysCommand extends Command
@@ -123,24 +123,25 @@ class ImportSurveysCommand extends Command
             $hypothes = $firstRound['hypotheses'][0];
             $candidates = Collection::make($hypothes['candidats']);
 
-            $survey = Survey::create([
-                'identifier' => $item['id'],
-                'sponsor' => $item['nom_institut'],
-                'sample' => $item['echantillon'],
-                'start_date' => $item['debut_enquete'],
-                'end_date' => $item['fin_enquete'],
-            ]);
+            $survey = Survey::firstOrCreate(
+                ['identifier' => $item['id']],
+                [
+                    'sponsor' => $item['nom_institut'],
+                    'sample' => $item['echantillon'],
+                    'start_date' => $item['debut_enquete'],
+                    'end_date' => $item['fin_enquete'],
+                ]
+            );
 
             $candidates->each(function ($c) use ($survey) {
-                $candidate = Candidate::where('name', $c['candidat'])->first();
-
                 // ignore bad data 20210127_0128_ips
-                if (\is_null($candidate) && !is_null($c['candidat'])) {
-                    $candidate = Candidate::create([
-                        'name' => $c['candidat'],
-                        'politic' => $c['parti'][0],
-                    ]);
+                if (is_null($c['candidat'])) {
+                    return true;
                 }
+                $candidate = Candidate::firstOrCreate(
+                    ['name' => $c['candidat']],
+                    ['name' => $c['candidat'], 'politic' => $c['parti'][0]],
+                );
 
                 $survey->candidates()->attach($candidate, ['stat' => $c['intentions']]);
             });
