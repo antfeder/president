@@ -134,7 +134,7 @@ class ImportSurveysCommand extends Command
             );
 
             $candidates->each(function ($c) use ($survey) {
-                // ignore bad data 20210127_0128_ips
+                // ignore bad data in 20210127_0128_ips
                 if (is_null($c['candidat'])) {
                     return true;
                 }
@@ -142,8 +142,7 @@ class ImportSurveysCommand extends Command
                     ['name' => $c['candidat']],
                     ['name' => $c['candidat'], 'politic' => $c['parti'][0]],
                 );
-
-                $survey->candidates()->attach($candidate, ['stat' => $c['intentions']]);
+                $survey->candidates()->syncWithoutDetaching([$candidate['id'] => ['stat' => $c['intentions']]]);
             });
         });
     }
