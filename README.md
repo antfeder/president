@@ -1,6 +1,20 @@
 # Surveys
 
-[Laravel Docs](https://laravel.com/docs/9.x)
+[Laravel Docs](https://laravel.com/docs/9.x)  
+[Surveys Data source](https://raw.githubusercontent.com/nsppolls/nsppolls/master/presidentielle.json)
+
+## Exercice
+
+Handling 2022 presidential election surveys results and displaying data as follow:
+
+```sh
+|               | Candidate 1 | Candidate 2 | ...         |
+|---------------|-------------|-------------|-------------|
+| Survey 1 Date | Result in % | Result in % | Result in % |
+| Survey 2 Date | Result in % | Result in % | Result in % |
+| ...           | Result in % | Result in % | Result in % |
+Last update: {date}
+```
 
 ## Init
 
@@ -11,31 +25,59 @@
 ./vendor/bin/sail artisan surveys:refresh
 ```
 
-## If you want to run unit tests
+Go to http://localhost  
+
+Unit tests:
 
 ```sh
 ./vendor/bin/sail test
 ```
 
-Go to http://localhost
+## Implementation
 
-## Data refresh
+### Data Modeling
 
-### Using scheduler
+This application handles surveys data through a many-to-many relationship:  
+one or many surveys records are related to one or many candidates records through a joining table,  
+which is keeping relationnal data.  
 
-For dev purpose, cron is scheduled to execute every minute, but i guess daily run would be fine.
+<a href="./docs/database_diagram.png">
+<img src="./docs/database_diagram.png" alt="database diagram" style="width: 500px;"/>
+</a>
 
-To simulate locally:
+### Data refresh
+
+In order to replicate a real environment, a scheduled task has been implemented.  
+
+Data refreshing is handled with an artisan command: `surveys:refresh`.  
+Its job is to fetch fresh data, and managing synchronization accross the database.  
+
+For demo purpose, a cron task is scheduled to execute every minute in dev environment.  
+As the data are not often updated, a production environment should perform this action less frequently.
+
+To simulate scheduler locally:  
 
 ```sh
 sail php artisan schedule:work
 ```
 
-### Manually
+Or perform the update on demand:  
 
 ```sh
 sail php artisan surveys:refresh
 ```
+
+## Performances
+
+In order to get best performances results and minimizing data computation frequency, this application should be deployed  
+alongside a web server page caching solution as NGINX or APACHE could do.
+
+## Redis Cache
+
+@todo
+- Cloud database read/write operations cost
+- Data Compute using third party API with limited rates
+- SPOF webserver caching solution
 
 ## Misc
 
